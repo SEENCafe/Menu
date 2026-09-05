@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // منو برای همه (مشتری‌ها) قابل خواندن است، اما فقط کاربر واردشده
+    // (ادمین) می‌تواند آن را ویرایش کند.
+    match /menu/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت | کافه سین</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-body">
+
+  <div id="not-configured" class="login-wrap" style="display:none;">
+    <div class="login-card">
+      <div class="brand-mark">SEEN CAFE</div>
+      <h1>Firebase هنوز پیکربندی نشده</h1>
+      <p class="hint-text">
+        برای فعال شدن پنل مدیریت، ابتدا مقادیر پروژه Firebase خود را در فایل
+        <code>js/firebase-config.js</code> وارد کنید. مراحل کامل در
+        <code>README.md</code> توضیح داده شده است.
+      </p>
+    </div>
+  </div>
+
+  <div id="login-view" class="login-wrap">
+    <div class="login-card">
+      <div class="brand-mark">SEEN CAFE</div>
+      <h1>ورود به پنل مدیریت</h1>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">ایمیل ادمین</label>
+          <input type="email" id="login-email" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="login-password">رمز عبور</label>
+          <input type="password" id="login-password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">ورود</button>
+        <div class="error-text" id="login-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboard-view" style="display:none;">
+    <div class="admin-topbar">
+      <h1>پنل مدیریت منو — کافه سین</h1>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">خروج</button>
+    </div>
+
+    <div class="admin-wrap">
+      <section class="admin-section">
+        <h2>
+          ایمپورت از اکسل
+        </h2>
+        <p class="hint-text">
+          فایل اکسل را با ستون‌های «دسته‌بندی، آیکون دسته (اختیاری)، نام آیتم، قیمت» آماده و آپلود کنید.
+          آیتم‌های هر دسته‌بندی به‌ترتیب ردیف‌ها گروه‌بندی می‌شوند. توجه: ایمپورت، منوی فعلی در ویرایشگر را
+          جایگزین می‌کند و برای ثبت نهایی باید روی «ذخیره تغییرات» کلیک کنید.
+        </p>
+        <div class="import-actions">
+          <button id="download-template-btn" class="btn btn-secondary btn-sm">دانلود قالب اکسل</button>
+          <label class="btn btn-primary btn-sm" style="cursor:pointer;">
+            انتخاب فایل اکسل
+            <input type="file" id="import-file" accept=".xlsx,.xls" style="display:none;" />
+          </label>
+        </div>
+      </section>
+
+      <section class="admin-section">
+        <h2>
+          دسته‌بندی‌ها و آیتم‌ها
+          <button id="add-category-btn" class="btn btn-secondary btn-sm">+ افزودن دسته‌بندی</button>
+        </h2>
+        <div id="categories"></div>
+      </section>
+
+      <button id="save-btn" class="btn btn-primary" style="width:100%; padding:0.9rem;">ذخیره تغییرات</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

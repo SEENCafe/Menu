@@ -1,0 +1,122 @@
+// Default / fallback menu data.
+// Used as the initial seed for Firestore (from the admin panel) and as an
+// offline fallback if the live data cannot be loaded.
+
+export const cafeInfo = {
+  name: 'کافه سین',
+  address: 'آباده، بلوار بوعلی، بریدگی آخر',
+  phones: ['07144368774', '09178530185'],
+  instagram: 'https://instagram.com/seen_cafe__',
+};
+
+export const defaultMenu = [
+  {
+    id: 'hot-bars',
+    icon: '☕',
+    name: 'بار گرم',
+    items: [
+      { id: 'i1', name: 'اسپرسو', price: '۴۵-۶۵' },
+      { id: 'i2', name: 'اسپرسو 90 روبوستا', price: '۴۵-۶۵' },
+      { id: 'i3', name: 'اسپرسو 100 عربیکا', price: '۵۵-۷۵' },
+      { id: 'i4', name: 'آمریکانو', price: '۵۰-۷۰' },
+      { id: 'i5', name: 'امریکنو عربیکا', price: '۶۰-۸۰' },
+      { id: 'i6', name: 'آب زنجبیل', price: '۵۰' },
+      { id: 'i7', name: 'قهوه ترک', price: '۶۰' },
+      { id: 'i8', name: 'قهوه فرانسه', price: '۷۰' },
+      { id: 'i9', name: 'کاپوچینو', price: '۸۰' },
+      { id: 'i10', name: 'نسکافه', price: '۸۰' },
+      { id: 'i11', name: 'هات چاکلت', price: '۸۰' },
+      { id: 'i12', name: 'ماسالا', price: '۸۰' },
+      { id: 'i13', name: 'وایت چاکلت', price: '۸۰' },
+      { id: 'i14', name: 'پینک چاکلت', price: '۸۰' },
+      { id: 'i15', name: 'کرک', price: '۹۰' },
+      { id: 'i16', name: 'لته', price: '۹۰' },
+      { id: 'i17', name: 'موکا', price: '۱۰۰' },
+      { id: 'i18', name: 'کارامل ماکیاتو', price: '۱۰۰' },
+      { id: 'i19', name: 'دمنوش (۲–۳ – ۴ نفره)', price: '۶۰-۹۰-۱۲۰' },
+      { id: 'i20', name: 'چای (۲–۳ – ۴ نفره)', price: '۵۰-۷۵-۱۰۰' },
+    ],
+  },
+  {
+    id: 'cold-bars',
+    icon: '🧊',
+    name: 'بار سرد',
+    items: [
+      { id: 'i21', name: 'آفوگاتو', price: '۷۰' },
+      { id: 'i22', name: 'لیموناد', price: '۹۰' },
+      { id: 'i23', name: 'موهیتو', price: '۹۰' },
+      { id: 'i24', name: 'آیس لته', price: '۸۰-۹۵' },
+      { id: 'i25', name: 'آیس کارامل ماکیاتو', price: '۱۰۰' },
+      { id: 'i26', name: 'آیس موکا', price: '۱۰۰' },
+      { id: 'i27', name: 'سیروپ', price: '۳۰' },
+    ],
+  },
+  {
+    id: 'shakes',
+    icon: '🥤',
+    name: 'شیک',
+    items: [
+      { id: 'i28', name: 'شیک وانیل', price: '۱۵۰' },
+      { id: 'i29', name: 'شیک توت‌فرنگی', price: '۱۵۰' },
+      { id: 'i30', name: 'شیک شکلات', price: '۱۵۰' },
+      { id: 'i31', name: 'شیک نسکافه', price: '۱۷۰' },
+      { id: 'i32', name: 'شیک اسپرسو', price: '۱۷۰' },
+      { id: 'i33', name: 'شیک موز', price: '۱۷۰' },
+      { id: 'i34', name: 'شیک موز شکلات', price: '۱۷۰' },
+      { id: 'i35', name: 'شیک موز اسپرسو', price: '۲۰۰' },
+      { id: 'i36', name: 'شیک موز نسکافه', price: '۲۰۰' },
+      { id: 'i37', name: 'شیک موز نوتلا', price: '۲۲۰' },
+      { id: 'i38', name: 'شیک نوتلا', price: '۲۲۰' },
+      { id: 'i39', name: 'شیک بادام زمینی', price: '۲۲۰' },
+      { id: 'i40', name: 'شیک کیت کت', price: '۲۲۰' },
+      { id: 'i41', name: 'شیک اورئو', price: '۱۸۰' },
+      { id: 'i42', name: 'شیک لوتوس', price: '۲۲۰' },
+    ],
+  },
+  {
+    id: 'cakes',
+    icon: '🎂',
+    name: 'کیک',
+    items: [
+      { id: 'i43', name: 'کیک شکلاتی', price: '۹۰' },
+      { id: 'i44', name: 'تیرامیسو', price: '۱۱۰' },
+      { id: 'i45', name: 'چیز کیک', price: '۱۱۰' },
+    ],
+  },
+  {
+    id: 'foreign-dishes',
+    icon: '🍝',
+    name: 'غذای فرنگی',
+    items: [
+      { id: 'i46', name: 'پاستا آلفردو چیکن', price: '۳۰۰' },
+      { id: 'i47', name: 'چیکن استراگانوف', price: '۳۰۰' },
+      { id: 'i48', name: 'پاستا آلفردو بیف', price: '۴۸۰' },
+      { id: 'i49', name: 'بیف استراگانوف', price: '۴۸۰' },
+      { id: 'i50', name: 'سالاد سزار', price: '۳۱۰' },
+    ],
+  },
+  {
+    id: 'fast-food',
+    icon: '🍕',
+    name: 'فست فود',
+    items: [
+      { id: 'i51', name: 'سیب‌زمینی', price: '۱۵۰' },
+      { id: 'i52', name: 'نان سیر', price: '۱۷۰-۲۲۰' },
+      { id: 'i53', name: 'پیتزا مخصوص', price: '۳۹۰-۲۶۵-۱۵۰' },
+      { id: 'i54', name: 'پیتزا پپرونی', price: '۳۹۰-۲۶۵-۱۵۰' },
+      { id: 'i55', name: 'پیتزا گوشت و قارچ', price: '۵۳۵-۳۶۵-۲۰۵' },
+      { id: 'i56', name: 'پیتزا چیکن', price: '۵۰۵-۳۵۵-۱۹۵' },
+      { id: 'i57', name: 'پیتزا رست بیف', price: '۷۲۵-۴۶۵-۲۵۵' },
+      { id: 'i58', name: 'پیتزا سیر و استیک', price: '۸۰۵-۴۸۵-۲۶۵' },
+    ],
+  },
+  {
+    id: 'steaks',
+    icon: '🥩',
+    name: 'استیک',
+    items: [
+      { id: 'i59', name: 'استیک مرغ', price: '۳۲۰' },
+      { id: 'i60', name: 'استیک فیله گوساله', price: '۶۲۰' },
+    ],
+  },
+];
