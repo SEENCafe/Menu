@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
+import { doc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
 import { db, isFirebaseConfigured, MENU_COLLECTION, MENU_DOC_ID } from './firebase-init.js';
 import { defaultMenu, cafeInfo } from './menu-data.js';
 
@@ -115,7 +115,7 @@ function toPersianDigits(str) {
   return String(str).replace(/[0-9]/g, (d) => persian[+d]);
 }
 
-async function loadMenu() {
+function loadMenu() {
   renderCafeInfo();
 
   if (!isFirebaseConfigured) {
@@ -123,17 +123,20 @@ async function loadMenu() {
     return;
   }
 
-  try {
-    const snap = await getDoc(doc(db, MENU_COLLECTION, MENU_DOC_ID));
-    if (snap.exists() && Array.isArray(snap.data().categories) && snap.data().categories.length > 0) {
-      renderMenu(snap.data().categories);
-    } else {
+  onSnapshot(
+    doc(db, MENU_COLLECTION, MENU_DOC_ID),
+    (snap) => {
+      if (snap.exists() && Array.isArray(snap.data().categories) && snap.data().categories.length > 0) {
+        renderMenu(snap.data().categories);
+      } else {
+        renderMenu(defaultMenu);
+      }
+    },
+    (err) => {
+      console.error('خطا در دریافت منو از Firebase، نمایش نسخه پیش‌فرض:', err);
       renderMenu(defaultMenu);
     }
-  } catch (err) {
-    console.error('خطا در دریافت منو از Firebase، نمایش نسخه پیش‌فرض:', err);
-    renderMenu(defaultMenu);
-  }
+  );
 }
 
 loadMenu();
