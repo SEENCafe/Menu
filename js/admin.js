@@ -12,10 +12,10 @@ import {
 import { auth, db, isFirebaseConfigured, MENU_COLLECTION, MENU_DOC_ID } from './firebase-init.js';
 import { defaultMenu } from './menu-data.js';
 import {
-  GITHUB_DISPATCH_TOKEN,
   GITHUB_REPO,
   GITHUB_WORKFLOW_FILE,
   GITHUB_REPO_BRANCH,
+  GITHUB_TOKEN_STORAGE_KEY,
 } from './github-sync-config.js';
 
 const notConfiguredEl = document.getElementById('not-configured');
@@ -130,14 +130,33 @@ addCategoryBtn.addEventListener('click', () => {
   render();
 });
 
+function getGithubDispatchToken() {
+  try {
+    const stored = localStorage.getItem(GITHUB_TOKEN_STORAGE_KEY);
+    if (stored !== null) return stored || null; // رشته‌ی خالی یعنی قبلاً رد شده
+
+    const entered = prompt(
+      'برای اینکه نسخه‌ی پشتیبان سایت بلافاصله بعد از ذخیره آپدیت بشه (نه تا یک ساعت بعد)، ' +
+        'یک GitHub Token با دسترسی محدود «Actions: Read and write» لازمه (طبق راهنمای js/github-sync-config.js). ' +
+        'این توکن فقط همین‌جا در همین مرورگر ذخیره می‌شه، نه در کد سایت.\n\n' +
+        'اگر نمی‌خواید این قابلیت رو فعال کنید، خالی بگذارید و OK بزنید (آپدیت پشتیبان همچنان هر ساعت خودکار انجام می‌شه).'
+    );
+    localStorage.setItem(GITHUB_TOKEN_STORAGE_KEY, entered || '');
+    return entered || null;
+  } catch {
+    return null;
+  }
+}
+
 async function triggerStaticMenuSync() {
-  if (!GITHUB_DISPATCH_TOKEN || GITHUB_DISPATCH_TOKEN.startsWith('YOUR_')) return;
+  const token = getGithubDispatchToken();
+  if (!token) return;
 
   try {
     await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_FILE}/dispatches`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
+        Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
       },
