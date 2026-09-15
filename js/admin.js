@@ -11,6 +11,12 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
 import { auth, db, isFirebaseConfigured, MENU_COLLECTION, MENU_DOC_ID } from './firebase-init.js';
 import { defaultMenu } from './menu-data.js';
+import {
+  GITHUB_DISPATCH_TOKEN,
+  GITHUB_REPO,
+  GITHUB_WORKFLOW_FILE,
+  GITHUB_REPO_BRANCH,
+} from './github-sync-config.js';
 
 const notConfiguredEl = document.getElementById('not-configured');
 const loginView = document.getElementById('login-view');
@@ -124,6 +130,27 @@ addCategoryBtn.addEventListener('click', () => {
   render();
 });
 
+async function triggerStaticMenuSync() {
+  if (!GITHUB_DISPATCH_TOKEN || GITHUB_DISPATCH_TOKEN.startsWith('YOUR_')) return;
+
+  try {
+    await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_FILE}/dispatches`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${GITHUB_DISPATCH_TOKEN}`,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      body: JSON.stringify({ ref: GITHUB_REPO_BRANCH }),
+    });
+  } catch (err) {
+    // اگر این درخواست ناموفق باشد اتفاق مهمی نمی‌افتد؛ ذخیره در Firestore
+    // همین الان موفق بوده و کرون ساعتی هم نسخه‌ی استاتیک را دیر یا زود
+    // همگام می‌کند.
+    console.warn('اجرای فوری همگام‌سازی نسخه‌ی استاتیک ناموفق بود:', err);
+  }
+}
+
 saveBtn.addEventListener('click', async () => {
   saveBtn.disabled = true;
   saveBtn.textContent = 'در حال ذخیره...';
@@ -133,6 +160,7 @@ saveBtn.addEventListener('click', async () => {
       updatedAt: serverTimestamp(),
     });
     showToast('تغییرات با موفقیت ذخیره شد.');
+    triggerStaticMenuSync();
   } catch (err) {
     console.error(err);
     showToast('خطا در ذخیره‌سازی. دوباره تلاش کنید.', true);
