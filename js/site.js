@@ -115,11 +115,32 @@ function toPersianDigits(str) {
   return String(str).replace(/[0-9]/g, (d) => persian[+d]);
 }
 
+const MENU_CACHE_KEY = 'seenCafeMenuCache';
+
+function readCachedMenu() {
+  try {
+    const raw = localStorage.getItem(MENU_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed.categories) && parsed.categories.length > 0 ? parsed.categories : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedMenu(categories) {
+  try {
+    localStorage.setItem(MENU_CACHE_KEY, JSON.stringify({ categories }));
+  } catch {
+    // حالت مرور خصوصی یا فضای ذخیره‌سازی پر — قابل چشم‌پوشی
+  }
+}
+
 function loadMenu() {
   renderCafeInfo();
 
   if (!isFirebaseConfigured) {
-    renderMenu(defaultMenu);
+    renderMenu(readCachedMenu() || defaultMenu);
     return;
   }
 
@@ -127,14 +148,18 @@ function loadMenu() {
     doc(db, MENU_COLLECTION, MENU_DOC_ID),
     (snap) => {
       if (snap.exists() && Array.isArray(snap.data().categories) && snap.data().categories.length > 0) {
-        renderMenu(snap.data().categories);
+        const categories = snap.data().categories;
+        renderMenu(categories);
+        writeCachedMenu(categories);
       } else {
-        renderMenu(defaultMenu);
+        renderMenu(readCachedMenu() || defaultMenu);
       }
     },
     (err) => {
-      console.error('خطا در دریافت منو از Firebase، نمایش نسخه پیش‌فرض:', err);
-      renderMenu(defaultMenu);
+      // قطعی موقت اتصال به Firebase نباید باعث نمایش قیمت‌های قدیمیِ هاردکدشده
+      // بشه؛ آخرین نسخه‌ی موفق قبلی (اگر موجود باشه) ارجح‌تر از defaultMenu است.
+      console.error('خطا در دریافت منو از Firebase، نمایش آخرین نسخه ذخیره‌شده:', err);
+      renderMenu(readCachedMenu() || defaultMenu);
     }
   );
 }
